@@ -1,0 +1,14 @@
+<div class="col-md-2 border-red py-3">
+  <h3 class= "text-center">Results</h3>
+
+  <% current_city_quarter.games.includes(:user).where(user: {role: role}).group(:user).sum(:rating).sort_by{|k, v| v}.reverse.each_with_index do |user_rating, index| %>
+    <div class="card win-color win-<%= index + 1 %> w-100 p-3 my-3">
+        <small class="size-18px"><%= index + 1 %> : <%= user_rating[0].cw_nickname %></small>
+
+        <div class="d-flex w-100 justify-content-between">
+          <small><%= user_rating[0].language %></small>
+          <small><%= user_rating[-1] %>pts</small>
+        </div>
+    </div>
+  <% end %>
+</div>

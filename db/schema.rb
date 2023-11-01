@@ -10,9 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_084427) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_155653) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "city_quarters", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "exercices", force: :cascade do |t|
+    t.string "title"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "kata"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "round_id", null: false
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "rating"
+    t.index ["round_id"], name: "index_games_on_round_id"
+    t.index ["user_id"], name: "index_games_on_user_id"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer "rank"
+    t.bigint "exercice_id", null: false
+    t.bigint "city_quarter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "visible", default: false
+    t.integer "progress", default: 0
+    t.integer "role"
+    t.index ["city_quarter_id"], name: "index_rounds_on_city_quarter_id"
+    t.index ["exercice_id"], name: "index_rounds_on_exercice_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,8 +60,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_084427) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role"
+    t.integer "language"
+    t.bigint "city_quarter_id", null: false
+    t.string "cw_nickname"
+    t.boolean "admin"
+    t.index ["city_quarter_id"], name: "index_users_on_city_quarter_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "games", "rounds"
+  add_foreign_key "games", "users"
+  add_foreign_key "rounds", "city_quarters"
+  add_foreign_key "rounds", "exercices"
+  add_foreign_key "users", "city_quarters"
 end

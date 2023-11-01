@@ -1,0 +1,38 @@
+<div class="col-md-2">
+  <h3 class= "text-center">Round <%= round.rank %></h3>
+
+  <% if round.pending? && (round.rank == 1 || round.city_quarter.rounds.where(role: round.role).find_by(rank: round.rank - 1, progress: :pasted)) %>
+    <div>Pending</div>
+    <br>
+    <%= link_to("Reveal", round_path(round), data: {turbo_method: :patch}, class: "btn btn-warning text-white") if current_user.admin %>
+  <% elsif round.pending? %>
+    <div>Pending</div>
+  <% elsif round.active? %>
+    <div>Active</div>
+    <a href="https://www.codewars.com/kata/<%= round.exercice.url %>/train/<%= current_user.language %>" target="_blank">Lien vers l'exercice</a>
+    <br>
+    <%= link_to("Next", round_path(round), data: {turbo_method: :patch}, class: "btn btn-danger text-white") if current_user.admin %>
+  <% elsif round.pasted? %>
+    <div>Pasted</div>
+    <a href="https://www.codewars.com/kata/<%= round.exercice.url %>/train/<%= current_user.language %>" target="_blank">Lien vers l'exercice</a>
+  <% end %>
+
+  <% round.games.includes(:user).where(users: {role: round.role}).order(rating: :desc).each_with_index do |game, index| %>
+    <div class="card win-color win-<%= index + 1 %>  w-100 p-3 my-3">
+        <small class="size-18px"><%= index + 1 %> : <%= game.user.cw_nickname %></small>
+        <small><i><%= game.finished_at.strftime("%H:%M:%S") %></i></small>
+        <div class="d-flex w-100 justify-content-between">
+          <small><%= game.user.language %></small>
+          <small><%= game.rating %>pts</small>
+        </div>
+    </div>
+  <% end %>
+
+  <% round.unqualified_users.where(role: round.role).each do |user| %>
+    <div class="card w-100 p-3 my-3">
+      <small class="size-18px"><%= user.cw_nickname %></small>
+      <small><i>Pending</i></small>
+      <small><%= user.language %></small>
+    </div>
+  <% end %>
+</div>

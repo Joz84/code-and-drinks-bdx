@@ -10,3 +10,42 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+body {
+    background: #16171B;
+    color: white;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: white;
+    font-family: 'Victor Mono', monospace;
+}
+
+.card {
+    background: #777;
+}
+
+.border-red {
+    border: 3px solid orange;
+    border-radius: 3px;
+}
+
+.win-color {
+    background: #FFAAAA;
+}
+
+.win-3 {
+    background: orange;
+}
+
+.win-2 {
+    background: gold;
+}
+
+.win-1 {
+    background: lightgreen;
+}
+
+.size-18px {
+    font-size: 18px;
+}

@@ -1,0 +1,17 @@
+<div class="container">
+  <h1 class="text-center my-5">Let's go <%= current_city_quarter.title %></h1>
+  
+  <hr>
+  <h2 class="text-center my-5">Students (<%= current_city_quarter.users.where(role: :student).count %> pers)</h2>
+  <div class="row">
+    <%= render current_city_quarter.rounds.where(role: :student).order(:rank) %>
+    <%= render "city_quarters/results", role: :student %>
+  </div>
+
+  <hr>
+  <h2 class="text-center mt-4">Teachers (<%= current_city_quarter.users.where(role: :teacher).count %> pers)</h2>
+  <div class="row">
+    <%= render current_city_quarter.rounds.where(role: :teacher).order(:rank) %>
+    <%= render "city_quarters/results", role: :teacher %>
+  </div>
+</div>
