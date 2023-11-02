@@ -11,7 +11,7 @@
     <div>Active</div>
     <a href="https://www.codewars.com/kata/<%= round.exercice.url %>/train/<%= current_user.language %>" target="_blank">Lien vers l'exercice</a>
     <br>
-    <%= link_to("Next", round_path(round), data: {turbo_method: :patch}, class: "btn btn-danger text-white") if current_user.admin %>
+    <%= link_to("Next", round_path(round), data: {turbo_method: :patch, turbo_confirm: 'Are you sure?'}, class: "btn btn-danger text-white") if current_user.admin %>
   <% elsif round.pasted? %>
     <div>Pasted</div>
     <a href="https://www.codewars.com/kata/<%= round.exercice.url %>/train/<%= current_user.language %>" target="_blank">Lien vers l'exercice</a>
