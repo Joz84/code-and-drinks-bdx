@@ -11,10 +11,14 @@ class User < ApplicationRecord
   enum language: [ :ruby, :python, :sql ]
 
   validates :cw_nickname, presence: true
+  validates :cw_nickname, uniqueness: { scope: :city_quarter,
+    message: "The username codewars is already registered for this tournament" }
+
   validates :role, presence: true
   validates :language, presence: true
 
   validate :cw_nickname_exist
+  validate :cw_nickname_is_new
 
   def cw_nickname_exist
     code = 100
@@ -27,5 +31,16 @@ class User < ApplicationRecord
       errors.add(:cw_nickname, "does not exist")
     end
   end
+
+  def cw_nickname_is_new
+    begin
+      url = "https://www.codewars.com/api/v1/users/#{cw_nickname}/code-challenges/completed"
+      kata_nbr = JSON.parse(RestClient.get(url).body)["data"].count
+      errors.add(:cw_nickname, "is not newly initialized") if kata_nbr != 0
+    rescue
+      errors.add(:cw_nickname, "An error has occurred")
+    end
+  end
+
 
 end
