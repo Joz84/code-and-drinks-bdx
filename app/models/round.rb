@@ -21,17 +21,17 @@ class Round < ApplicationRecord
         kata = JSON.parse(RestClient.get(url).body)["data"].find{|kata| kata["id"] == self.exercice.url}
         if kata && DateTime.parse(kata["completedAt"]).to_date == DateTime.now.to_date
           user.games.create(
-            round: self, 
+            round: self,
             finished_at: DateTime.parse(kata["completedAt"]),
             rating: 10
           )
         elsif attrs[:finish]
           user.games.create(
-            round: self, 
+            round: self,
             finished_at: DateTime.now,
             rating: 0
           )
-        end 
+        end
       rescue
       end
     end
@@ -41,6 +41,10 @@ class Round < ApplicationRecord
          .each_with_index do |game, index|
             game.update(rating: (10 - index > 0) ? (10 - index) : 0)
           end
+  end
+
+  def can_be_revealed?
+    pending? && (rank == 1 || city_quarter.rounds.where(role: role).find_by(rank: rank - 1, progress: :pasted))
   end
 
 end
