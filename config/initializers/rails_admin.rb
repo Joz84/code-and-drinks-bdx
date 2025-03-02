@@ -1,3 +1,5 @@
+require Rails.root.join('lib/rails_admin/actions/update_round_status.rb')
+
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
 
@@ -47,9 +49,34 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
+    update_round_status
 
-    ## With an audit adapter, you can add:
-    # history_index
-    # history_show
+    # member :update_round_status do
+    #   only ["Round"]
+    #   link_icon "fas fa-wrench"
+
+    #   controller do
+    #     Proc.new do
+    #       @round = Round.find(params[:id])
+
+    #       if @round.active?
+    #         @round.create_last_games(finish: true)
+    #         @round.pasted!
+    #       elsif @round.pending?
+    #         @round.active!
+    #       end
+
+    #       redirect_to rails_admin.edit_path(model_name: "Round", id: @round.id)
+    #     end
+    #   end
+
+    #   visible do
+    #     bindings[:object].can_be_revealed? || bindings[:object].active?
+    #   end
+
+    #   register_instance_option :show_in_navigation do
+    #       false
+    #     end
+    # end
   end
 end

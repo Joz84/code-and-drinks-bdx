@@ -1,0 +1,5 @@
+en:
+  admin:
+    actions:
+      update_round_status:
+        menu: Update Round Status
