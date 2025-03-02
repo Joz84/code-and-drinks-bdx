@@ -23,10 +23,6 @@ module RailsAdmin
           bindings[:object].can_be_revealed? || bindings[:object].active?
         end
 
-        register_instance_option :show_in_navigation do
-          false
-        end
-
         register_instance_option :controller do
           Proc.new do
             @round = Round.find(params[:id])
