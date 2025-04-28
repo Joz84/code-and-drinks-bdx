@@ -1,3 +1,5 @@
+require Rails.root.join('lib/rails_admin/actions/update_round_status.rb')
+
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
 
@@ -47,9 +49,6 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-
-    ## With an audit adapter, you can add:
-    # history_index
-    # history_show
+    update_round_status
   end
 end

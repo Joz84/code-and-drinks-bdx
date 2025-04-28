@@ -1,7 +1,7 @@
 <div class="col-md-2">
   <h3 class= "text-center">Round <%= round.rank %></h3>
 
-  <% if round.pending? && (round.rank == 1 || round.city_quarter.rounds.where(role: round.role).find_by(rank: round.rank - 1, progress: :pasted)) %>
+  <% if round.can_be_revealed? %>
     <div>Pending</div>
     <br>
     <%= link_to("Reveal", round_path(round), data: {turbo_method: :patch}, class: "btn btn-warning text-white") if current_user.admin %>
