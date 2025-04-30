@@ -20,7 +20,12 @@ module RailsAdmin
         end
 
         register_instance_option :visible? do
-          bindings[:object].can_be_revealed? || bindings[:object].active?
+          object = bindings.dig(:object)
+          case object
+          when Round
+            object.can_be_revealed? || object.active?
+          else false
+          end
         end
 
         register_instance_option :controller do
